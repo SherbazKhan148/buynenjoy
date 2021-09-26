@@ -253,7 +253,7 @@ const OrderScreen = ({ location, history, match }) => {
                                                                 maxWidth:
                                                                     "40px",
                                                             }}
-                                                            src={item.s3Image}
+                                                            src={item.s3Image1}
                                                             alt={item.name}
                                                             fluid
                                                             rounded
@@ -294,28 +294,28 @@ const OrderScreen = ({ location, history, match }) => {
                                 <ListGroup.Item>
                                     <Row>
                                         <Col>Items</Col>
-                                        <Col>${order.itemsPrice}</Col>
+                                        <Col>Rs {order.itemsPrice}</Col>
                                     </Row>
                                 </ListGroup.Item>
 
                                 <ListGroup.Item>
                                     <Row>
                                         <Col>Shipping</Col>
-                                        <Col>${order.shippingPrice}</Col>
+                                        <Col>Rs {order.shippingPrice}</Col>
                                     </Row>
                                 </ListGroup.Item>
 
                                 <ListGroup.Item>
                                     <Row>
                                         <Col>Tax</Col>
-                                        <Col>${order.taxPrice}</Col>
+                                        <Col>Rs {order.taxPrice}</Col>
                                     </Row>
                                 </ListGroup.Item>
 
                                 <ListGroup.Item>
                                     <Row>
                                         <Col>Total</Col>
-                                        <Col>${order.totalPrice}</Col>
+                                        <Col>Rs {order.totalPrice}</Col>
                                     </Row>
                                 </ListGroup.Item>
 

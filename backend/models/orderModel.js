@@ -19,11 +19,18 @@ const orderSchema = mongoose.Schema(
                 },
                 image: {
                     type: String,
-                    required: true,
                 },
                 s3Image: {
                     type: String,
-                    required: true,
+                },
+                s3Image1: {
+                    type: String,
+                },
+                s3Image2: {
+                    type: String,
+                },
+                s3Image3: {
+                    type: String,
                 },
                 price: {
                     type: Number,

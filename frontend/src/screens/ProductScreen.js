@@ -27,6 +27,7 @@ const ProductScreen = ({ history, match }) => {
     const [qty, setQty] = useState(1);
     const [rating, setRating] = useState(0);
     const [comment, setComment] = useState("");
+    const [imageToShow, setImageToShow] = useState("");
 
     const dispatch = useDispatch();
 
@@ -45,7 +46,12 @@ const ProductScreen = ({ history, match }) => {
     const notify = () => toast("Reviewed Submitted!");
 
     useEffect(() => {
-        dispatch(listProductDetails(match.params.id));
+        if (!loading && product && !product.s3Image1) {
+            dispatch(listProductDetails(match.params.id));
+        } else if (!loading && product && product.s3Image1) {
+            setImageToShow(product.s3Image1);
+        }
+
         if (successProductReview) {
             setTimeout(() => {
                 notify();
@@ -54,10 +60,14 @@ const ProductScreen = ({ history, match }) => {
             setComment("");
             dispatch({ type: PRODUCT_CREATE_REVIEW_RESET });
         }
-    }, [dispatch, match, successProductReview]);
+    }, [dispatch, match, successProductReview, loading, product]);
 
     const handleAddToCart = (e) => {
         history.push(`/cart/${match.params.id}?qty=${qty}`);
+    };
+
+    const handleImageSelect = (e) => {
+        setImageToShow(e.target.src);
     };
 
     const submitHandler = (e) => {
@@ -92,9 +102,11 @@ const ProductScreen = ({ history, match }) => {
                         draggable
                         pauseOnHover
                     />
-
                     <Row>
-                        <Col md={6}>
+                        <Col
+                            md={6}
+                            style={{ textAlign: "center", paddingLeft: "0px" }}
+                        >
                             <Zoom>
                                 {/* src={product.image} */}
                                 <Image
@@ -102,10 +114,74 @@ const ProductScreen = ({ history, match }) => {
                                         maxHeight: "350px",
                                         maxWidth: "500px",
                                     }}
-                                    src={product.s3Image}
+                                    // src={product.s3Image1}
+                                    src={imageToShow}
                                     alt={product.name}
                                     fluid
                                 ></Image>
+                                <br />
+                                <Row>
+                                    {product.s3Image1 &&
+                                        product.s3Image1.includes(
+                                            "ecommerce-pics"
+                                        ) && (
+                                            <Col>
+                                                <Image
+                                                    style={{
+                                                        maxHeight: "100px",
+                                                        maxWidth: "100px",
+                                                        cursor: "pointer",
+                                                    }}
+                                                    src={product.s3Image1}
+                                                    alt={product.name}
+                                                    fluid
+                                                    onClick={(e) =>
+                                                        handleImageSelect(e)
+                                                    }
+                                                ></Image>
+                                            </Col>
+                                        )}
+                                    {product.s3Image2 &&
+                                        product.s3Image2.includes(
+                                            "ecommerce-pics"
+                                        ) && (
+                                            <Col>
+                                                <Image
+                                                    style={{
+                                                        maxHeight: "100px",
+                                                        maxWidth: "100px",
+                                                        cursor: "pointer",
+                                                    }}
+                                                    src={product.s3Image2}
+                                                    alt={product.name}
+                                                    fluid
+                                                    onClick={(e) =>
+                                                        handleImageSelect(e)
+                                                    }
+                                                ></Image>
+                                            </Col>
+                                        )}
+                                    {product.s3Image3 &&
+                                        product.s3Image3.includes(
+                                            "ecommerce-pics"
+                                        ) && (
+                                            <Col>
+                                                <Image
+                                                    style={{
+                                                        maxHeight: "100px",
+                                                        maxWidth: "100px",
+                                                        cursor: "pointer",
+                                                    }}
+                                                    src={product.s3Image3}
+                                                    alt={product.name}
+                                                    fluid
+                                                    onClick={(e) =>
+                                                        handleImageSelect(e)
+                                                    }
+                                                ></Image>
+                                            </Col>
+                                        )}
+                                </Row>
                             </Zoom>
                         </Col>
                         <Col md={3}>
@@ -196,7 +272,9 @@ const ProductScreen = ({ history, match }) => {
                                             </ListGroup.Item>
                                         )}
 
-                                        <ListGroup.Item>
+                                        <ListGroup.Item
+                                            style={{ textAlign: "center" }}
+                                        >
                                             <Button
                                                 className="btn-block"
                                                 type="button"
@@ -213,6 +291,7 @@ const ProductScreen = ({ history, match }) => {
                             </Card>
                         </Col>
                     </Row>
+                    <hr />
                     <Row>
                         <Col md={6}>
                             <h2>Reivews</h2>

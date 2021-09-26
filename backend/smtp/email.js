@@ -1,15 +1,41 @@
 // const nodemailer = require("nodemailer");
 import nodemailer from "nodemailer";
-const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-        user: "sherbazkhan1408@gmail.com", //[process.env.FROM_EMAIL].toString(),
-        pass: "12don123", //[process.env.FROM_EMAIL_PASS].toString(), // naturally, replace both with your real credentials or an application-specific password
-    },
-});
+import { google } from "googleapis";
+// const transporter = nodemailer.createTransport({
+//     service: "gmail",
+//     auth: {
+//         user: "sherbazkhan1408@gmail.com", //[process.env.FROM_EMAIL].toString(),
+//         pass: "********", //[process.env.FROM_EMAIL_PASS].toString(), // naturally, replace both with your real credentials or an application-specific password
+
+//     },
+// });
 
 export const sendMailToAdmin = async (orderDetails) => {
     try {
+        const oAuth2Client = new google.auth.OAuth2(
+            process.env.GOOGLE_CLIENT_ID,
+            process.env.GOOGLE_CLIENT_SECRET,
+            process.env.GOOGLE_REDIRECT_URI
+        );
+
+        oAuth2Client.setCredentials({
+            refresh_token: process.env.GOOGLE_REFRESH_TOKEN,
+        });
+
+        const accessToken = await oAuth2Client.getAccessToken();
+
+        const transporter = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+                type: "OAuth2",
+                user: process.env.FROM_EMAIL,
+                clientId: process.env.GOOGLE_CLIENT_ID,
+                clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+                refreshToken: process.env.GOOGLE_REFRESH_TOKEN,
+                accessToken,
+            },
+        });
+
         const {
             user,
             order,
@@ -22,8 +48,8 @@ export const sendMailToAdmin = async (orderDetails) => {
         } = orderDetails;
 
         const mailOptionsAdmin = {
-            from: "sherbazkhan1408@gmail.com",
-            to: "sherbazkhan148@gmail.com", //, enemiesofenron@gmail.com",
+            from: `${process.env.FROM_EMAIL_NAME} <${process.env.FROM_EMAIL}>`,
+            to: process.env.FROM_EMAIL, //, enemiesofenron@gmail.com",
             subject: "New Order",
             html: "",
         };
@@ -80,6 +106,30 @@ export const sendMailToAdmin = async (orderDetails) => {
 
 export const sendMailToCustomer = async (orderDetails) => {
     try {
+        const oAuth2Client = new google.auth.OAuth2(
+            process.env.GOOGLE_CLIENT_ID,
+            process.env.GOOGLE_CLIENT_SECRET,
+            process.env.GOOGLE_REDIRECT_URI
+        );
+
+        oAuth2Client.setCredentials({
+            refresh_token: process.env.GOOGLE_REFRESH_TOKEN,
+        });
+
+        const accessToken = await oAuth2Client.getAccessToken();
+
+        const transporter = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+                type: "OAuth2",
+                user: process.env.FROM_EMAIL,
+                clientId: process.env.GOOGLE_CLIENT_ID,
+                clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+                refreshToken: process.env.GOOGLE_REFRESH_TOKEN,
+                accessToken,
+            },
+        });
+
         const {
             user,
             order,
@@ -92,7 +142,7 @@ export const sendMailToCustomer = async (orderDetails) => {
         } = orderDetails;
 
         const mailOptionsCustomer = {
-            from: "sherbazkhan1408@gmail.com",
+            from: `${process.env.FROM_EMAIL_NAME} <${process.env.FROM_EMAIL}>`,
             to: user.email, //, enemiesofenron@gmail.com",
             subject: "Thankyou For Your Order",
             html: "",

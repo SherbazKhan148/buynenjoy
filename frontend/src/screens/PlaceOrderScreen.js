@@ -124,7 +124,7 @@ const PlaceOrderScreen = ({ location, history }) => {
                                                                 maxWidth:
                                                                     "40px",
                                                             }}
-                                                            src={item.s3Image}
+                                                            src={item.s3Image1}
                                                             alt={item.name}
                                                             fluid
                                                             rounded

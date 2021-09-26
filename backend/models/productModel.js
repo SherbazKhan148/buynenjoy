@@ -36,13 +36,21 @@ const productSchema = mongoose.Schema(
             type: String,
             required: true,
         },
-        image: {
+        // image: {
+        //     type: String,
+        //     required: true,
+        // },
+        // s3Image: {
+        //     type: String,
+        // },
+        s3Image1: {
             type: String,
-            required: true,
         },
-        s3Image: {
+        s3Image2: {
             type: String,
-            required: true,
+        },
+        s3Image3: {
+            type: String,
         },
         brand: {
             type: String,

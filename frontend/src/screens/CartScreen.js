@@ -48,7 +48,7 @@ const CartScreen = ({ match, location, history }) => {
 
     return (
         <Row>
-            <Col md={8}>
+            <Col md={8} lg={8}>
                 <h1>Shopping Cart</h1>
                 {cartItems.length === 0 ? (
                     <Message>
@@ -66,28 +66,30 @@ const CartScreen = ({ match, location, history }) => {
                                 return (
                                     <ListGroup.Item key={item.product}>
                                         <Row>
-                                            <Col md={2}>
+                                            <Col sm={12} md={2} lg={2}>
                                                 {/* src={item.image} */}
                                                 <Image
                                                     style={{
                                                         maxHeight: "50px",
                                                         maxWidth: "90px",
                                                     }}
-                                                    src={item.s3Image}
+                                                    src={item.s3Image1}
                                                     alt={item.name}
                                                     fluid
                                                     rounded
                                                 ></Image>
                                             </Col>
-                                            <Col md={3}>
+                                            <Col sm={6} md={3} lg={3}>
                                                 <Link
                                                     to={`/product/${item.product}`}
                                                 >
                                                     {item.name}
                                                 </Link>
                                             </Col>
-                                            <Col md={2}>Rs {item.price}</Col>
-                                            <Col md={2}>
+                                            <Col sm={6} md={2} lg={2}>
+                                                Rs {item.price}
+                                            </Col>
+                                            <Col sm={6} md={2} lg={2}>
                                                 <Form.Control
                                                     as="select"
                                                     value={item.qty}
@@ -111,7 +113,7 @@ const CartScreen = ({ match, location, history }) => {
                                                     })}
                                                 </Form.Control>
                                             </Col>
-                                            <Col md={2}>
+                                            <Col sm={6} md={2} lg={2}>
                                                 <Button
                                                     type="button"
                                                     variant="light"
@@ -132,7 +134,7 @@ const CartScreen = ({ match, location, history }) => {
                     </Fade>
                 )}
             </Col>
-            <Col md={4}>
+            <Col md={4} lg={4}>
                 <Card>
                     <Zoom bottom cascade>
                         <ListGroup variant="flush">
@@ -157,7 +159,7 @@ const CartScreen = ({ match, location, history }) => {
                                         .toFixed(2)}
                                 </h4>
                             </ListGroup.Item>
-                            <ListGroup.Item>
+                            <ListGroup.Item style={{ textAlign: "center" }}>
                                 <Button
                                     type="button"
                                     className="btn-block"

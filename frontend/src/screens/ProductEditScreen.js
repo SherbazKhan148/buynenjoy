@@ -15,8 +15,11 @@ const ProductEditScreen = ({ match, history }) => {
 
     const [name, setName] = useState("");
     const [price, setPrice] = useState(0.0);
-    const [image, setImage] = useState("");
-    const [s3Image, setS3Image] = useState("");
+    // const [image, setImage] = useState("");
+    // const [s3Image, setS3Image] = useState("");
+    const [s3Image1, setS3Image1] = useState("");
+    const [s3Image2, setS3Image2] = useState("");
+    const [s3Image3, setS3Image3] = useState("");
     const [brand, setBrand] = useState("");
     const [category, setCategory] = useState("");
     const [countInStock, setCountInStock] = useState(0);
@@ -54,8 +57,11 @@ const ProductEditScreen = ({ match, history }) => {
                 } else {
                     setName(product.name);
                     setPrice(product.price);
-                    setImage(product.image);
-                    setS3Image(product.s3Image);
+                    // setImage(product.image);
+                    // setS3Image(product.s3Image);
+                    setS3Image1(product.s3Image1);
+                    setS3Image2(product.s3Image2);
+                    setS3Image3(product.s3Image3);
                     setBrand(product.brand);
                     setCategory(product.category);
                     setCountInStock(product.countInStock);
@@ -69,31 +75,48 @@ const ProductEditScreen = ({ match, history }) => {
 
     const uploadFileHandler = async (e) => {
         if (e) {
-            const file = e.target.files[0];
-            const formData = new FormData();
-            formData.append("image", file);
             setUploading(true);
+            const files = e.target.files;
 
-            try {
-                const config = {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                    },
-                };
+            for (let i = 0; i <= files.length - 1; i++) {
+                //const file = e.target.files[0];
+                const formData = new FormData();
+                formData.append("image", files[i]);
+                // setUploading(true);
 
-                const { data } = await axios.post(
-                    "/api/upload",
-                    formData,
-                    config
-                );
+                try {
+                    const config = {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                        },
+                    };
 
-                setImage(data.path);
-                setS3Image(data.s3Path);
-                setUploading(false);
-            } catch (error) {
-                console.log(error);
-                setUploading(false);
+                    const { data } = await axios.post(
+                        "/api/upload",
+                        formData,
+                        config
+                    );
+
+                    // setImage(data.path);
+                    // setS3Image(data.s3Path);
+                    if (i === 0) {
+                        setS3Image1(data.s3Path);
+                        console.log(data.s3Path);
+                    } else if (i === 1) {
+                        setS3Image2(data.s3Path);
+                        console.log(data.s3Path);
+                    } else {
+                        setS3Image3(data.s3Path);
+                        console.log(data.s3Path);
+                    }
+                    //setUploading(false);
+                } catch (error) {
+                    alert("Error Uploading Images: " + JSON.stringify(error));
+                    setUploading(false);
+                    return;
+                }
             }
+            setUploading(false);
         }
     };
 
@@ -104,8 +127,11 @@ const ProductEditScreen = ({ match, history }) => {
                 _id: product._id,
                 name,
                 price,
-                image,
-                s3Image,
+                // image,
+                // s3Image,
+                s3Image1,
+                s3Image2,
+                s3Image3,
                 brand,
                 category,
                 countInStock,
@@ -170,17 +196,18 @@ const ProductEditScreen = ({ match, history }) => {
                                 controlId="image"
                             >
                                 <Form.Label>Select Image</Form.Label>
-                                <Form.Control
+                                {/* <Form.Control
                                     type="text"
                                     placeholder="image.jpg"
                                     value={image}
                                     style={{ display: "none" }}
                                     onChange={(e) => setImage(e.target.value)}
-                                ></Form.Control>
+                                ></Form.Control> */}
                                 <Form.File
                                     id="image-file"
                                     // label="Choose File"
                                     custom
+                                    multiple
                                     onChange={uploadFileHandler}
                                 ></Form.File>
                                 {uploading && <Loader />}

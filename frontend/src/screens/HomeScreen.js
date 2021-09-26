@@ -46,6 +46,7 @@ const HomeScreen = ({ match }) => {
                             <Col
                                 className="product"
                                 key={product._id}
+                                xs={12}
                                 sm={12}
                                 md={6}
                                 lg={4}
